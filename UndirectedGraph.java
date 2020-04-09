@@ -2,14 +2,28 @@
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * @author Nick Zolondek
+ */
 public class UndirectedGraph
 {
+    /**
+     * Vertices to store name and list of adjacent vertexes.
+     */
     private HashMap<String, LinkedList<Vertex>> vertices;
+
+    /**
+     * List of all the vertexes.
+     */
     private ArrayList<Vertex> listOfVertices;
 
 
-
-    public UndirectedGraph(ArrayList<Vertex> listOfVertices) {
+    /**
+     * A constructor for an undirected graph.
+     * @param listOfVertices
+     */
+    public UndirectedGraph(ArrayList<Vertex> listOfVertices)
+    {
         vertices = new HashMap<String, LinkedList<Vertex>>();
 
         for (int i = 0; i < listOfVertices.size(); i++) {
@@ -19,12 +33,23 @@ public class UndirectedGraph
     }
 
 
+    /**
+     * Add an edge to the graph.
+     * @param u vertex as a key
+     * @param v vertex as a resultant vertex.
+     * @return true or false.
+     */
     public boolean addEdge(Vertex u, Vertex v)
     {
         return (vertices.get(u.getName()).add(v) && vertices.get(v.getName()).add(u));
     }
 
 
+    /**
+     * Breadth first search.
+     * @param start starting at this vertex.
+     * @return a new undirected graph.
+     */
     public UndirectedGraph breadthFirstSearch(Vertex start)
     {
 
@@ -44,23 +69,31 @@ public class UndirectedGraph
         Q.add(start);
 
 
-
+        // While Q is not empty.
         while(Q.size() > 0)
         {
 
-
+            // Remove first element from Q and store it in u.
             Vertex u = Q.removeFirst();
 
-
-
+            // For each  v in u-> adjacent do
             for (Vertex v : vertices.get(u.getName()))
             {
-                if (v.getColor() == Vertex.WHITE) {
+                // if color of v is white
+                if (v.getColor() == Vertex.WHITE)
+                {
+                    //Set v green.
                     v.setColor(Vertex.GREEN);
+
+                    // Enqueue v.
                     Q.addLast(v);
+
+                    // Add the edge (u, v)
                     graph.addEdge(u, v);
                 }
             }
+
+            // set u's color to black.
             u.setColor(Vertex.BLACK);
         }
 
@@ -143,15 +176,28 @@ public class UndirectedGraph
     }
 
 
+    /**
+     * Print out everything in a nice way.
+     * @return string.
+     */
     @Override
     public String toString() {
+
+        // Heading for the string.
         String s = "Adjacency list for graph:\n";
+
+        // For each keys of vertices do
         for (String key : vertices.keySet())
         {
+            // Add vertex and key to the string.
             s += "Vertex " + key + ":";
-            LinkedList<Vertex> adjacentNodes = vertices.get(key);
-            Iterator<Vertex> iterator = adjacentNodes.iterator();
 
+            //Add the
+            LinkedList<Vertex> adjacentNodes = vertices.get(key);
+
+            //Create an iterator, so while loop can easily be used.
+            Iterator<Vertex> iterator = adjacentNodes.iterator();
+            //Iterate throughout the entire vertex.
             while (iterator.hasNext())
             {
                 Vertex vertex = iterator.next();
@@ -161,7 +207,7 @@ public class UndirectedGraph
 
         }
 
-
+        //Return the sting.
         return s;
     }
 
